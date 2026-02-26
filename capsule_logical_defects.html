@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dual-Color Capsule – Logical Defects</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@700;800&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #0d0f14;
+    color: #e8e4db;
+    font-family: 'DM Mono', monospace;
+    min-height: 100vh;
+    padding: 40px 24px 60px;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+  header h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(22px, 4vw, 38px);
+    font-weight: 800;
+    letter-spacing: -1px;
+    color: #f5f0e8;
+  }
+  header p {
+    margin-top: 8px;
+    font-size: 13px;
+    color: #888;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .tag {
+    display: inline-block;
+    background: #1e2130;
+    border: 1px solid #2e3248;
+    color: #7eb8f7;
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    margin-top: 10px;
+    letter-spacing: 1.5px;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+
+  .card {
+    background: #13161e;
+    border: 1px solid #1f2333;
+    border-radius: 16px;
+    padding: 28px 24px 22px;
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.2s;
+  }
+  .card:hover { border-color: #3a4060; }
+  .card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--accent);
+    opacity: 0.8;
+  }
+
+  .defect-num {
+    font-size: 11px;
+    color: #555;
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+  }
+  .defect-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 18px;
+  }
+
+  .capsule-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 18px;
+    min-height: 80px;
+  }
+
+  .description {
+    font-size: 12px;
+    line-height: 1.7;
+    color: #aaa;
+    border-top: 1px solid #1f2333;
+    padding-top: 14px;
+  }
+  .cause {
+    margin-top: 8px;
+    font-size: 11px;
+    color: #666;
+  }
+  .cause span { color: #f7a94b; }
+
+  /* ──────────── SVG CAPSULE HELPERS ──────────── */
+  /* Defined inline per card via SVG */
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Dual-Color Capsule — Logical Defects</h1>
+  <p>Visual Reference Guide · Print Quality Control</p>
+  <span class="tag">10 Defect Types</span>
+</header>
+
+<div class="grid">
+
+  <!-- 0. NORMAL (reference) -->
+  <div class="card" style="--accent:#4caf82">
+    <div class="defect-num">REF</div>
+    <div class="defect-title">✓ Normal / Acceptable</div>
+    <div class="capsule-wrap">
+      <svg width="200" height="70" viewBox="0 0 200 70">
+        <defs>
+          <clipPath id="cap0"><rect x="10" y="15" width="180" height="40" rx="20"/></clipPath>
+        </defs>
+        <!-- body -->
+        <rect x="10" y="15" width="180" height="40" rx="20" fill="#c0392b"/>
+        <!-- cap half -->
+        <rect x="10" y="15" width="90" height="40" fill="#f1c40f" clip-path="url(#cap0)"/>
+        <!-- seam -->
+        <line x1="100" y1="15" x2="100" y2="55" stroke="#0d0f14" stroke-width="2"/>
+        <!-- label arrows -->
+        <text x="55" y="72" fill="#f1c40f" font-size="10" text-anchor="middle" font-family="DM Mono">CAP</text>
+        <text x="145" y="72" fill="#c0392b" font-size="10" text-anchor="middle" font-family="DM Mono">BODY</text>
+        <line x1="55" y1="64" x2="55" y2="56" stroke="#f1c40f" stroke-width="1"/>
+        <line x1="145" y1="64" x2="145" y2="56" stroke="#c0392b" stroke-width="1"/>
+      </svg>
+    </div>
+    <div class="description">
+      Two distinct colors correctly aligned with the capsule seam. Clean boundary, full coverage on both halves.
+    </div>
+  </div>
+
+  <!-- 1. COLOR SWAP -->
+  <div class="card" style="--accent:#e74c3c">
+    <div class="defect-num">DEF 01</div>
+    <div class="defect-title">Color Swap / Reversal</div>
+    <div class="capsule-wrap">
+      <svg width="200" height="70" viewBox="0 0 200 70">
+        <defs>
+          <clipPath id="cap1"><rect x="10" y="15" width="180" height="40" rx="20"/></clipPath>
+        </defs>
+        <rect x="10" y="15" width="180" height="40" rx="20" fill="#f1c40f"/>
+        <rect x="10" y="15" width="90" height="40" fill="#c0392b" clip-path="url(#cap1)"/>
+        <line x1="100" y1="15" x2="100" y2="55" stroke="#0d0f14" stroke-width="2"/>
+        <!-- X marks -->
+        <text x="55" y="40" fill="#fff" font-size="11" text-anchor="middle" font-family="DM Mono" font-weight="bold">✗</text>
+        <text x="145" y="40" fill="#333" font-size="11" text-anchor="middle" font-family="DM Mono" font-weight="bold">✗</text>
+        <!-- arrows -->
+        <path d="M55,56 L55,62 L145,62 L145,56" stroke="#e74c3c" stroke-width="1.5" fill="none" stroke-dasharray="3,2"/>
+        <text x="100" y="72" fill="#e74c3c" font-size="9" text-anchor="middle" font-family="DM Mono">COLORS SWAPPED</text>
+      </svg>
+    </div>
+    <div class="description">
+      Cap and body colors are interchanged. The expected color positions are reversed from specification.
+    </div>
+    <div class="cause"><span>Cause:</span> Incorrect recipe/template loaded, or capsule fed upside-down.</div>
+  </div>
+
+  <!-- 2. MISREGISTRATION -->
+  <div class="card" style="--accent:#e67e22">
+    <div class="defect-num">DEF 02</div>
+    <div class="defect-title">Misregistration</div>
+    <div class="capsule-wrap">
+      <svg width="200" height="70" viewBox="0 0 200 70">
+        <defs>
+          <clipPath id="cap2"><rect x="10" y="15" width="180" height="40" rx="20"/></clipPath>
+        </defs>
+        <rect x="10" y="15" width="180" height="40" rx="20" fill="#c0392b"/>
+        <!-- yellow zone shifted right by 25px -->
+        <rect x="10" y="15" width="125" height="40" fill="#f1c40f" clip-path="url(#cap2)"/>
+        <!-- true seam -->
+        <line x1="100" y1="15" x2="100" y2="55" stroke="#0d0f14" stroke-width="2" stroke-dasharray="4,3"/>
+        <!-- print boundary -->
+        <line x1="125" y1="15" x2="125" y2="55" stroke="#fff" stroke-width="2"/>
+        <!-- annotation -->
+        <path d="M100,10 L125,10" stroke="#e67e22" stroke-width="1.5" marker-end="url(#arr)"/>
+        <text x="112" y="8" fill="#e67e22" font-size="9" text-anchor="middle" font-family="DM Mono">+25px</text>
+        <text x="84" y="66" fill="#999" font-size="9" text-anchor="middle" font-family="DM Mono">seam</text>
+        <text x="140" y="66" fill="#fff" font-size="9" text-anchor="middle" font-family="DM Mono">print edge</text>
+      </svg>
+    </div>
+    <div class="description">
+      The color boundary doesn't align with the physical capsule seam. One color overlaps into the other half.
+    </div>
+    <div class="cause"><span>Cause:</span> Sensor timing offset or mechanical misalignment.</div>
+  </div>
+
+  <!-- 3. MISSING PRINT -->
+  <div class="card" style="--accent:#9b59b6">
+    <div class="defect-num">DEF 03</div>
+    <div class="defect-title">Missing Print (Half)</div>
+    <div class="capsule-wrap">
+      <svg width="200" height="70" viewBox="0 0 200 70">
+        <defs>
+          <clipPath id="cap3"><rect x="10" y="15" width="180" height="40" rx="20"/></clipPath>
+          <pattern id="hatch" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(45)">
+            <line x1="0" y1="0" x2="0" y2="6" stroke="#444" stroke-width="1.5"/>
+          </pattern>
+        </defs>
+        <rect x="10" y="15" width="180" height="40" rx="20" fill="#c0392b"/>
+        <!-- missing cap print - show hatching -->
+        <rect x="10" y="15" width="90" height="40" fill="url(#hatch)" clip-path="url(#cap3)"/>
+        <line x1="100" y1="15" x2="100" y2="55" stroke="#0d0f14" stroke-width="2"/>
+        <text x="55" y="40" fill="#9b59b6" font-size="9" text-anchor="middle" font-family="DM Mono">NO INK</text>
+        <text x="55" y="66" fill="#9b59b6" font-size="9" text-anchor="middle" font-family="DM Mono">▲ MISSING</text>
+      </svg>
+    </div>
+    <div class="description">
+      One color zone is completely absent. The capsule appears as a single color or shows the base capsule shell color.
+    </div>
+    <div class="cause"><span>Cause:</span> Ink starvation, clogged nozzle, or broken print head.</div>
+  </div>
+
+  <!-- 4. OVERLAP -->
+  <div class="card" style="--accent:#1abc9c">
+    <div class="defect-num">DEF 04</div>
+    <div class="defect-title">Color Overlap / Bleed</div>
+    <div class="capsule-wrap">
+      <svg width="200" height="70" viewBox="0 0 200 70">
+        <defs>
+          <clipPath id="cap4"><rect x="10" y="15" width="180" height="40" rx="20"/></clipPath>
+        </defs>
+        <rect x="10" y="15" width="180" height="40" rx="20" fill="#c0392b"/>
+        <rect x="10" y="15" width="90" height="40" fill="#f1c40f" clip-path="url(#cap4)"/>
+        <!-- overlap zone -->
+        <rect x="85" y="15" width="30" height="40" fill="#e67e22" opacity="0.9" clip-path="url(#cap4)"/>
+        <line x1="100" y1="15" x2="100" y2="55" stroke="#0d0f14" stroke-width="2" stroke-dasharray="4,3"/>
+        <!-- bracket -->
+        <path d="M85,12 L85,8 L115,8 L115,12" stroke="#1abc9c" stroke-width="1.5" fill="none"/>
+        <text x="100" y="5" fill="#1abc9c" font-size="9" text-anchor="middle" font-family="DM Mono">BLEND ZONE</text>
+        <text x="100" y="66" fill="#e67e22" font-size="9" text-anchor="middle" font-family="DM Mono">mixed color</text>
+      </svg>
+    </div>
+    <div class="description">
+      The two colors overlap at the seam, creating a visible blended/mixed zone that is neither color.
+    </div>
+    <div class="cause"><span>Cause:</span> Band width parameter set too wide; ink not dry before rotation.</div>
+  </div>
+
+  <!-- 5. SKEWED PRINT -->
+  <div class="card" style="--accent:#3498db">
+    <div class="defect-num">DEF 05</div>
+    <div class="defect-title">Skewed / Tilted Print</div>
+    <div class="capsule-wrap">
+      <svg width="200" height="80" viewBox="0 0 200 80">
+        <defs>
+          <clipPath id="cap5"><rect x="10" y="20" width="180" height="40" rx="20"/></clipPath>
+        </defs>
+        <rect x="10" y="20" width="180" height="40" rx="20" fill="#c0392b"/>
+        <!-- skewed yellow polygon -->
+        <polygon points="10,20 115,20 85,60 10,60" fill="#f1c40f" clip-path="url(#cap5)"/>
+        <line x1="100" y1="20" x2="100" y2="60" stroke="#0d0f14" stroke-width="2" stroke-dasharray="4,3"/>
+        <!-- diagonal line indicator -->
+        <line x1="115" y1="20" x2="85" y2="60" stroke="#3498db" stroke-width="2"/>
+        <text x="138" y="16" fill="#3498db" font-size="9" font-family="DM Mono">↙ DIAGONAL</text>
+        <text x="138" y="26" fill="#3498db" font-size="9" font-family="DM Mono">BOUNDARY</text>
+      </svg>
+    </div>
+    <div class="description">
+      The print boundary runs diagonally rather than perpendicular to the capsule axis, creating a slanted color division.
+    </div>
+    <div class="cause"><span>Cause:</span> Capsule holder wear, vibration, or rotation speed inconsistency.</div>
+  </div>
+
+  <!-- 6. INCOMPLETE COVERAGE -->
+  <div class="card" style="--accent:#f39c12">
+    <div class="defect-num">DEF 06</div>
+    <div class="defect-title">Incomplete Coverage</div>
+    <div class="capsule-wrap">
+      <svg width="200" height="70" viewBox="0 0 200 70">
+        <defs>
+          <clipPath id="cap6"><rect x="10" y="15" width="180" height="40" rx="20"/></clipPath>
+          <pattern id="hatch2" patternUnits="userSpaceOnUse" width="6" height="6" patternTransform="rotate(45)">
+            <line x1="0" y1="0" x2="0" y2="6" stroke="#444" stroke-width="1.5"/>
+          </pattern>
+        </defs>
+        <rect x="10" y="15" width="180" height="40" rx="20" fill="#c0392b"/>
+        <!-- partial yellow - only 60px instead of 90 -->
+        <rect x="10" y="15" width="60" height="40" fill="#f1c40f" clip-path="url(#cap6)"/>
+        <!-- gap zone -->
+        <rect x="70" y="15" width="30" height="40" fill="url(#hatch2)" clip-path="url(#cap6)"/>
+        <line x1="100" y1="15" x2="100" y2="55" stroke="#0d0f14" stroke-width="2" stroke-dasharray="4,3"/>
+        <path d="M70,12 L70,8 L100,8 L100,12" stroke="#f39c12" stroke-width="1.5" fill="none"/>
+        <text x="85" y="5" fill="#f39c12" font-size="9" text-anchor="middle" font-family="DM Mono">GAP</text>
+      </svg>
+    </div>
+    <div class="description">
+      One color zone is only partially printed, leaving an uncolored gap between the two color zones.
+    </div>
+    <div class="cause"><span>Cause:</span> Partial nozzle blockage or low ink pressure.</div>
+  </div>
+
+  <!-- 7. GHOSTING -->
+  <div class="card" style="--accent:#e91e8c">
+    <div class="defect-num">DEF 07</div>
+    <div class="defect-title">Ghosting / Double Impression</div>
+    <div class="capsule-wrap">
+      <svg width="220" height="70" viewBox="0 0 220 70">
+        <defs>
+          <clipPath id="cap7a"><rect x="10" y="15" width="180" height="40" rx="20"/></clipPath>
+          <clipPath id="cap7b"><rect x="18" y="20" width="180" height="40" rx="20"/></clipPath>
+        </defs>
+        <!-- ghost (offset) -->
+        <rect x="18" y="20" width="180" height="40" rx="20" fill="#f1c40f" opacity="0.18"/>
+        <rect x="18" y="20" width="90" height="40" fill="#c0392b" clip-path="url(#cap7b)" opacity="0.18"/>
+        <!-- main capsule -->
+        <rect x="10" y="15" width="180" height="40" rx="20" fill="#c0392b"/>
+        <rect x="10" y="15" width="90" height="40" fill="#f1c40f" clip-path="url(#cap7a)"/>
+        <line x1="100" y1="15" x2="100" y2="55" stroke="#0d0f14" stroke-width="2"/>
+        <text x="195" y="30" fill="#e91e8c" font-size="9" font-family="DM Mono">← ghost</text>
+        <text x="195" y="42" fill="#e91e8c" font-size="9" font-family="DM Mono">shadow</text>
+      </svg>
+    </div>
+    <div class="description">
+      A faint secondary print appears offset from the main print, creating a visible shadow or echo effect.
+    </div>
+    <div class="cause"><span>Cause:</span> Print roller bounce, double feed, or residual ink on drum.</div>
+  </div>
+
+  <!-- 8. ORIENTATION ERROR -->
+  <div class="card" style="--accent:#ff6b6b">
+    <div class="defect-num">DEF 08</div>
+    <div class="defect-title">Orientation Error (Inverted)</div>
+    <div class="capsule-wrap">
+      <svg width="200" height="80" viewBox="0 0 200 80">
+        <defs>
+          <clipPath id="cap8"><rect x="10" y="15" width="180" height="40" rx="20"/></clipPath>
+        </defs>
+        <!-- capsule upside down indicator -->
+        <rect x="10" y="15" width="180" height="40" rx="20" fill="#f1c40f"/>
+        <rect x="10" y="15" width="90" height="40" fill="#c0392b" clip-path="url(#cap8)"/>
+        <line x1="100" y1="15" x2="100" y2="55" stroke="#0d0f14" stroke-width="2"/>
+        <!-- rotation arrows -->
+        <path d="M100,60 Q100,75 80,72" stroke="#ff6b6b" stroke-width="1.5" fill="none" marker-end="url(#arrR)"/>
+        <text x="100" y="78" fill="#ff6b6b" font-size="9" text-anchor="middle" font-family="DM Mono">↺ CAPSULE INVERTED</text>
+        <text x="55" y="40" fill="#fff" font-size="9" text-anchor="middle" font-family="DM Mono">BODY?</text>
+        <text x="145" y="40" fill="#333" font-size="9" text-anchor="middle" font-family="DM Mono">CAP?</text>
+      </svg>
+    </div>
+    <div class="description">
+      The capsule is fed inverted (180°). Colors appear on the correct zones but body/cap positions are swapped relative to assembly.
+    </div>
+    <div class="cause"><span>Cause:</span> Capsule orientation sensor failure or hopper jam.</div>
+  </div>
+
+  <!-- 9. NARROW BAND -->
+  <div class="card" style="--accent:#00bcd4">
+    <div class="defect-num">DEF 09</div>
+    <div class="defect-title">Incorrect Band Width</div>
+    <div class="capsule-wrap">
+      <svg width="200" height="70" viewBox="0 0 200 70">
+        <defs>
+          <clipPath id="cap9"><rect x="10" y="15" width="180" height="40" rx="20"/></clipPath>
+        </defs>
+        <rect x="10" y="15" width="180" height="40" rx="20" fill="#c0392b"/>
+        <!-- too narrow yellow band: only 45px instead of 90 -->
+        <rect x="10" y="15" width="45" height="40" fill="#f1c40f" clip-path="url(#cap9)"/>
+        <line x1="100" y1="15" x2="100" y2="55" stroke="#0d0f14" stroke-width="2" stroke-dasharray="4,3"/>
+        <line x1="55" y1="15" x2="55" y2="55" stroke="#00bcd4" stroke-width="1.5"/>
+        <!-- dimension line -->
+        <path d="M10,10 L55,10" stroke="#00bcd4" stroke-width="1.5"/>
+        <line x1="10" y1="8" x2="10" y2="12" stroke="#00bcd4" stroke-width="1.5"/>
+        <line x1="55" y1="8" x2="55" y2="12" stroke="#00bcd4" stroke-width="1.5"/>
+        <text x="32" y="8" fill="#00bcd4" font-size="9" text-anchor="middle" font-family="DM Mono">50% ✗</text>
+        <path d="M10,68 L100,68" stroke="#999" stroke-width="1" stroke-dasharray="3,2"/>
+        <text x="55" y="66" fill="#999" font-size="8" text-anchor="middle" font-family="DM Mono">spec = 100%</text>
+      </svg>
+    </div>
+    <div class="description">
+      The color zone is narrower (or wider) than specified. The color boundary does not reach or exceed the capsule midpoint.
+    </div>
+    <div class="cause"><span>Cause:</span> Band width parameter misconfiguration.</div>
+  </div>
+
+  <!-- 10. WRAP-AROUND REPEAT -->
+  <div class="card" style="--accent:#a29bfe">
+    <div class="defect-num">DEF 10</div>
+    <div class="defect-title">Repeat / Wrap-around Error</div>
+    <div class="capsule-wrap">
+      <svg width="200" height="70" viewBox="0 0 200 70">
+        <defs>
+          <clipPath id="cap10"><rect x="10" y="15" width="180" height="40" rx="20"/></clipPath>
+        </defs>
+        <rect x="10" y="15" width="180" height="40" rx="20" fill="#c0392b"/>
+        <rect x="10" y="15" width="90" height="40" fill="#f1c40f" clip-path="url(#cap10)"/>
+        <!-- repeat band on body side -->
+        <rect x="130" y="15" width="35" height="40" fill="#f1c40f" clip-path="url(#cap10)" opacity="0.8"/>
+        <line x1="100" y1="15" x2="100" y2="55" stroke="#0d0f14" stroke-width="2"/>
+        <!-- annotation -->
+        <path d="M147,12 L147,8" stroke="#a29bfe" stroke-width="1.5"/>
+        <text x="147" y="6" fill="#a29bfe" font-size="9" text-anchor="middle" font-family="DM Mono">REPEAT</text>
+        <path d="M55,60 Q100,70 147,60" stroke="#a29bfe" stroke-width="1" fill="none" stroke-dasharray="3,2"/>
+      </svg>
+    </div>
+    <div class="description">
+      The color pattern repeats on the same capsule — a second color band appears in the wrong zone due to roller sync failure.
+    </div>
+    <div class="cause"><span>Cause:</span> Encoder/roller synchronization error; capsule slippage.</div>
+  </div>
+
+</div>
+
+<footer style="text-align:center; margin-top:50px; color:#444; font-size:11px; letter-spacing:1.5px;">
+  PHARMACEUTICAL CAPSULE QC · DUAL-COLOR PRINT DEFECT REFERENCE · 2026
+</footer>
+
+</body>
+</html>
